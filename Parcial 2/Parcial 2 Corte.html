@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+     <head>
+          <title>Maria Paula</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+          <style>
+             
+
+               #info
+               {
+                    position: absolute;
+                    top: 0px;
+                    width: 100%;
+                    padding: 5px;
+                   text-align: center;
+                   color: #ff0000;
+                   
+               }
+
+          </style>
+     </head>
+
+     <body>
+
+          <div id="info">
+               
+                   <br>
+                 Parcial Maria Paula Velandia Orduy<br/>
+             
+                <strong>e + click</strong>: Borrar
+                <strong>f+click</strong>: Esfera
+                <strong>g+click</strong>: Cubo
+                <strong> h+click</strong>: Cilindro
+                <strong>i + click</strong>: cono
+                <strong>j + click</strong>: cono grande
+                <strong>k + click</strong>: Figura
+                <strong>l + click</strong>: Recatangulo horizontal
+                <strong>m + click</strong>: Recatangulo vertical
+                <strong>n + click</strong>: Esfera pequeña
+                   </div>
+
+          <!-- library three.js -->
+          <script src="http://dir.by/example_lib/tree_js/three.js"></script>
+
+          <!-- additional libraries -->
+          <script src="http://dir.by/example_lib/tree_js/WebGL.js"></script>
+
+          <script>
+
+               if ( WEBGL.isWebGLAvailable() === false ) {
+
+                    document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+
+               }
+
+               var camera, scene, renderer;
+               var plane, cube,sphere,Cylinder;
+               var mouse, raycaster, iseDown = false, isfDown = false,isgDown=false,ishDown=false,isiDown=false,isjDown=false,iskDown=false,islDown=false,ismDown=false,isnDown=false;
+
+               var rollOverMesh, rollOverMaterial;
+               var rollOverMesh1, rollOverMaterial1;
+               var rollOverMesh2, rollOverMaterial2;
+               var rollOverMesh3, rollOverMaterial3;
+               var rollOverMesh4, rollOverMaterial4;
+               var rollOverMesh5, rollOverMaterial5;
+               var rollOverMesh6, rollOverMaterial6;
+               var rollOverMesh7, rollOverMaterial7;
+               var rollOverMesh8, rollOverMaterial8;
+               var CubeGeo, CubeMaterial;
+               var sphereGeo,sphereMaterial;
+               var CylinderGeo, CylinderMaterial;
+               var coneGeo, coneMaterial;
+               var cone1Geo, cone1Material;
+               var Cylinder1Geo, Cylinder1Material;
+               var Cube1Geo, Cube1Material;
+               var Cube2Geo, Cube2Material;
+               var sphere1Geo,sphere1Material;
+             
+
+               var objects = [];
+
+               init();
+               render();
+
+               function init()
+               {
+                    camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
+                    camera.position.set( 500, 900, 3500 );
+                    camera.lookAt( 0, 0, 0 );
+
+                    scene = new THREE.Scene();
+                    scene.background = new THREE.Color( 0x000000 );
+
+                    // roll-over helpers
+                    var rollOverGeo = new THREE.BoxBufferGeometry( 50, 50, 50 );
+                    rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xf1948a, opacity: 0.5, transparent: true } );
+                    rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
+                    scene.add( rollOverMesh );
+                   
+                 
+                    var rollOverGeo1 =  new THREE.SphereBufferGeometry( 45, 32, 32 );
+                    rollOverMaterial1 = new THREE.MeshBasicMaterial( { color: 0xd0d3d4, opacity: 0.5, transparent: true } );
+                    rollOverMesh1 = new THREE.Mesh( rollOverGeo1, rollOverMaterial1 );
+                    scene.add( rollOverMesh1 );
+                   
+                   
+                    var rollOverGeo2 =  new THREE.CylinderBufferGeometry( 36, 36, 90, 32 );
+                    rollOverMaterial2 = new THREE.MeshBasicMaterial( { color: 0xd0ece7, opacity: 0.5, transparent: true } );
+                    rollOverMesh2 = new THREE.Mesh( rollOverGeo2, rollOverMaterial2 );
+                    scene.add( rollOverMesh2 );
+                   
+                     var rollOverGeo3 =  new THREE.ConeBufferGeometry( 50, 50, 50 );
+                    rollOverMaterial3 = new THREE.MeshBasicMaterial( { color: 0xF9e79f, opacity: 0.5, transparent: true } );
+                    rollOverMesh3 = new THREE.Mesh( rollOverGeo3, rollOverMaterial3 );
+                    scene.add( rollOverMesh3 );
+                   
+                    var rollOverGeo4 =  new THREE.ConeBufferGeometry( 50, 50, 50 );
+                    rollOverMaterial4 = new THREE.MeshBasicMaterial( { color: 0x626567, opacity: 0.5, transparent: true } );
+                    rollOverMesh4 = new THREE.Mesh( rollOverGeo4, rollOverMaterial4 );
+                    scene.add( rollOverMesh4     );
+                   
+                    var rollOverGeo5 =  new THREE.CylinderBufferGeometry (50, 50, 50 );
+                    rollOverMaterial5 = new THREE.MeshBasicMaterial( { color: 0xd7bde2, opacity: 0.5, transparent: true } );
+                    rollOverMesh5 = new THREE.Mesh( rollOverGeo5, rollOverMaterial5 );
+                    scene.add( rollOverMesh5 );
+                   
+                    var rollOverGeo6 =  new THREE.BoxBufferGeometry( 50, 50, 50 );
+                    rollOverMaterial6= new THREE.MeshBasicMaterial( { color: 0xd6eaf8, opacity: 0.5, transparent: true } );
+                    rollOverMesh6 = new THREE.Mesh( rollOverGeo6, rollOverMaterial6 );
+                    scene.add( rollOverMesh6 );
+                   
+                    var rollOverGeo7 =  new THREE.BoxBufferGeometry( 50, 50, 50 );
+                    rollOverMaterial7= new THREE.MeshBasicMaterial( { color: 0xf5b7b1, opacity: 0.5, transparent: true } );
+                    rollOverMesh7 = new THREE.Mesh( rollOverGeo7, rollOverMaterial7 );
+                    scene.add( rollOverMesh7 );
+                   
+                    var rollOverGeo8 =  new THREE.SphereBufferGeometry( 50, 50, 50 );
+                    rollOverMaterial8= new THREE.MeshBasicMaterial( { color: 0xf5b7b1, opacity: 0.5, transparent: true } );
+                    rollOverMesh8 = new THREE.Mesh( rollOverGeo8, rollOverMaterial8 );
+                    scene.add( rollOverMesh8 );
+                   
+
+                   //cube
+                   CubeGeo= new THREE.BoxBufferGeometry( 50, 50, 50 );
+                   CubeMaterial = new THREE.MeshLambertMaterial( { color: 0x8e44ad } );
+                   
+                   //sphere
+                    sphereGeo= new THREE.SphereBufferGeometry( 47, 40, 32 );
+                    sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xfbfcfc } );
+                   
+                   //Cylinder
+                   CylinderGeo = new THREE.CylinderBufferGeometry( 36, 36, 90, 32 );
+                   CylinderMaterial = new THREE.MeshLambertMaterial( { color: 0x117a65 } );
+                   
+                   //Cono
+                   
+                   coneGeo= new THREE.ConeBufferGeometry( 35, 60, 32 );
+                   coneMaterial = new THREE.MeshLambertMaterial( { color: 0xc39bd3 } );
+                   
+                   //Cono 2
+                   
+                   cone1Geo= new THREE.ConeBufferGeometry( 85, 85, 32 );
+                   cone1Material = new THREE.MeshLambertMaterial( { color: 0x9a7d0a } );
+                   
+                   //Cilindro 2
+                   
+                   Cylinder1Geo = new THREE.CylinderBufferGeometry( 50, 30, 70, 32 );
+                   Cylinder1Material = new THREE.MeshLambertMaterial( { color: 0x2e40053 } );
+                   
+                   //Rectangulo
+                   
+                   Cube1Geo= new THREE.BoxBufferGeometry( 90, 60, 25 );
+                   Cube1Material = new THREE.MeshLambertMaterial( { color: 0x3498db } );
+                   
+                    //Rectangulo2
+                   
+                   Cube2Geo= new THREE.BoxBufferGeometry( 90, 100, 25 );
+                   Cube2Material = new THREE.MeshLambertMaterial( { color: 0xe74c3c } );
+                   
+                   //Esfera2
+                    sphere1Geo= new THREE.SphereBufferGeometry( 25, 25, 32 );
+                    sphere1Material = new THREE.MeshLambertMaterial( { color: 0x4a235a } );
+                   
+
+
+                    // grid
+                    var gridHelper = new THREE.GridHelper( 1000, 20 );
+                    scene.add( gridHelper );
+
+                    //
+                    raycaster = new THREE.Raycaster();
+                    mouse = new THREE.Vector2();
+
+                    var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
+                    geometry.rotateX( - Math.PI / 2 );
+
+                    plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
+                    scene.add( plane );
+
+                    objects.push( plane );
+
+                    // lights
+                    var ambientLight = new THREE.AmbientLight( 0x606060 );
+                    scene.add( ambientLight );
+
+                    var directionalLight = new THREE.DirectionalLight( 0xffffff );
+                    directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
+                    scene.add( directionalLight );
+
+                    renderer = new THREE.WebGLRenderer( { antialias: true } );
+                    renderer.setPixelRatio( window.devicePixelRatio );
+                    renderer.setSize( window.innerWidth, window.innerHeight );
+                    document.body.appendChild( renderer.domElement );
+
+                    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+                    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+                    document.addEventListener( 'keydown', onDocumentKeyDown, false );
+                    document.addEventListener( 'keyup', onDocumentKeyUp, false );
+
+                    window.addEventListener( 'resize', onWindowResize, false );
+               }
+
+               function onWindowResize()
+               {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+
+                    renderer.setSize( window.innerWidth, window.innerHeight );
+               }
+
+               function onDocumentMouseMove( event )
+               {
+                    event.preventDefault();
+
+                    mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+
+                    raycaster.setFromCamera( mouse, camera );
+
+                    var intersects = raycaster.intersectObjects( objects );
+
+                    if ( intersects.length > 0 )
+                    {
+                         var intersect = intersects[ 0 ];
+                       
+                        if(isgDown)
+                      { var intersect = intersects[ 0 ];
+                        //cube
+                        rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       }
+                       
+                         
+                       if(isfDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                       //sphere
+                        rollOverMesh1.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh1.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                      }
+                         if(ishDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                       
+                       //Cylinder
+                        rollOverMesh2.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh2.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                      if(isiDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                         
+                       //Cono
+                        rollOverMesh3.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh3.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                       
+                    if(isjDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                         
+                       //Cono 2
+                        rollOverMesh4.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh4.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                       
+                                               
+                    if(iskDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                         
+                       //Cilindro 2
+                        rollOverMesh5.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh5.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                       
+                    if(islDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                         
+                       //Rectangulo
+                        rollOverMesh6.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh6.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                       
+                    if(ismDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                         
+                       //Rectangulo
+                        rollOverMesh7.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh7.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                    if(isnDown)
+                    {var intersect = intersects[ 0 ];
+                       
+                         
+                       //Rectangulo
+                        rollOverMesh8.position.copy( intersect.point ).add( intersect.face.normal );
+                        rollOverMesh8.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                       
+                     }
+                    }
+                   
+
+                    render();
+               
+               }
+
+               function onDocumentMouseDown( event )
+               {
+                    event.preventDefault();
+
+                    mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+
+                    raycaster.setFromCamera( mouse, camera );
+
+                    var intersects = raycaster.intersectObjects( objects );
+
+                    if ( intersects.length > 0 )
+                    {
+                         var intersect = intersects[ 0 ];
+
+                         // delete
+
+                         if (iseDown)
+                         {
+                              if ( intersect.object !== plane )
+                              {
+                                   scene.remove( intersect.object );
+
+                                   objects.splice( objects.indexOf( intersect.object ), 1 );
+                              }
+                         }
+                         
+                       
+                       
+                         
+                         else
+                         {
+                             if(isgDown)
+                                 {
+                              /// creat cube
+                             var voxel = new THREE.Mesh( CubeGeo, CubeMaterial );
+                              voxel.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel );
+
+                              objects.push( voxel );
+                                 }
+                             
+                             if(isfDown)
+                                 {
+                              /// creat sphere
+                             var voxel1 = new THREE.Mesh( sphereGeo, sphereMaterial );
+                              voxel1.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel1.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel1 );
+
+                              objects.push( voxel1 );
+                                 }
+                             
+                            if(ishDown)
+                                 {
+                              /// creat Cylinder
+                              var voxel2 = new THREE.Mesh( CylinderGeo, CylinderMaterial );
+                              voxel2.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel2.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel2 );
+
+                              objects.push( voxel2 );
+                                 }
+                             
+                                                         
+                            if(isiDown)
+                                 {
+                              /// crear cono
+                              var voxel3 = new THREE.Mesh( coneGeo, coneMaterial );
+                              voxel3.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel3.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel3 );
+
+                              objects.push( voxel3 );
+                                 }
+                             
+                            if(isjDown)
+                                 {
+                              /// crear cono
+                              var voxel4 = new THREE.Mesh( cone1Geo, cone1Material );
+                              voxel4.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel4.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel4 );
+
+                              objects.push( voxel4 );
+                                 }
+                             
+                             if(iskDown)
+                                 {
+                              /// crear cono
+                              var voxel5 = new THREE.Mesh( Cylinder1Geo, Cylinder1Material );
+                              voxel5.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel5.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel5);
+
+                              objects.push( voxel5 );
+                                 }
+                            if(islDown)
+                                 {
+                              /// crear cono
+                              var voxel6 = new THREE.Mesh( Cube1Geo, Cube1Material );
+                              voxel6.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel6.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel6);
+
+                              objects.push( voxel6 );
+                                 }
+                             
+                            if(ismDown)
+                                 {
+                              /// crear rectangulo
+                              var voxel7 = new THREE.Mesh( Cube2Geo, Cube2Material );
+                              voxel7.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel7.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel7);
+
+                              objects.push( voxel7 );
+                                 }
+                             
+                             if(isnDown)
+                                 {
+                              /// crear esfera pequeña
+                              var voxel8 = new THREE.Mesh( sphere1Geo, sphere1Material );
+                              voxel8.position.copy( intersect.point ).add( intersect.face.normal );
+                              voxel8.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                              scene.add( voxel8);
+
+                              objects.push( voxel8 );
+                                 }
+                         }
+
+                         render();
+                    }
+               }
+
+               function onDocumentKeyDown( event )
+               {
+                    switch( event.keyCode )
+                    {
+                         case 69: iseDown = true; break;
+                         case 70: isfDown=true; break;
+                         case 72: ishDown=true;break;
+                         case 71 :isgDown=true; break;
+                         case 73 :isiDown=true; break;
+                         case 74 :isjDown=true; break;
+                         case 75 :iskDown=true; break;
+                         case 76 :islDown=true; break;
+                         case 77 :ismDown=true; break;
+                         case 78 :isnDown=true; break;
+                    }
+               }
+
+               function onDocumentKeyUp( event )
+               {
+                    switch ( event.keyCode )
+                    {
+                         case 69: iseDown = false; break;
+                         case 70: isfDown=false; break;
+                         case 72: ishDown=false; break;
+                         case 71 :isgDown=false; break;
+                         case 73 :isiDown=false; break;
+                         case 74 :isjDown=false; break;
+                         case 75 :iskDown=false; break;
+                         case 76 :islDown=false; break;
+                         case 77 :ismDown=false; break;
+                         case 78 :isnDown=false; break;
+                    }
+               }
+             
+
+               function render()
+               {
+                    renderer.render( scene, camera );
+               }
+
+          </script>
+     </body>
+
+</html>
